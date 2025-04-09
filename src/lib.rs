@@ -1,7 +1,7 @@
 // audio_processor.rs
 use std::fs::File;
 use std::io::BufReader;
-use hound; // Add to Cargo.toml: hound = "3.5.0"
+use hound;
 
 pub struct AudioProcessor {
     samples: Vec<f32>,
