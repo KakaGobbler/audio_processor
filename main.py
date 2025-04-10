@@ -56,7 +56,7 @@ def select_audio_file():
     return file_path
 
 def main():
-    # Allow the user to select an audio file via drag-and-drop or file dialog
+    # Allow the user to select an audio file via file dialog
     audio_file = select_audio_file()
     if not audio_file:
         print("No file selected. Exiting...")
