@@ -45,7 +45,7 @@ class AudioVisualizer:
 
 def main():
     # Example usage
-    visualizer = AudioVisualizer("path/to/your/audio.wav")
+    visualizer = AudioVisualizer(r"Zeit.wav")
     visualizer.start()
 
 if __name__ == "__main__":

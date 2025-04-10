@@ -5,11 +5,11 @@ edition = "2024"
 
 [dependencies]
 hound = "3.4.0"
-
-[dependencies.pyo3]
-version = "0.20.0"
-features = ["extension-module"]
+pyo3 = { version = "0.18", features = ["extension-module"] }
 
 [lib]
 name = "audio_processor"
 crate-type = ["cdylib"]
+
+[features]
+python_bindings = []

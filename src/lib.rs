@@ -2,6 +2,7 @@
 use std::fs::File;
 use std::io::BufReader;
 use hound;
+use pyo3::prelude::*;
 
 pub struct AudioProcessor {
     samples: Vec<f32>,
@@ -49,10 +50,7 @@ impl AudioProcessor {
 }
 
 // PyO3 bindings for Python integration
-#[cfg(feature = "python")]
-use pyo3::prelude::*;
-
-#[cfg(feature = "python")]
+#[cfg(feature = "python_bindings")]
 #[pymodule]
 fn audio_processor(_py: Python, m: &PyModule) -> PyResult<()> {
     #[pyclass]
@@ -64,9 +62,10 @@ fn audio_processor(_py: Python, m: &PyModule) -> PyResult<()> {
     impl PyAudioProcessor {
         #[new]
         fn new(file_path: &str) -> PyResult<Self> {
-            Ok(PyAudioProcessor {
-                inner: AudioProcessor::new(file_path)?,
-            })
+            match AudioProcessor::new(file_path) {
+                Ok(processor) => Ok(PyAudioProcessor { inner: processor }),
+                Err(e) => Err(pyo3::exceptions::PyRuntimeError::new_err(e.to_string())),
+            }
         }
 
         fn get_frequency_bands(&self, num_bands: usize) -> Vec<f32> {
@@ -75,5 +74,14 @@ fn audio_processor(_py: Python, m: &PyModule) -> PyResult<()> {
     }
 
     m.add_class::<PyAudioProcessor>()?;
+
+    #[pyfunction]
+    unsafe fn get_frequency_bands(num_bars: usize) -> PyResult<Vec<f64>> {
+        // Example implementation
+        Ok(vec![1.0; num_bars])
+    }
+
+    m.add_function(wrap_pyfunction!(get_frequency_bands, m)?)?;
+
     Ok(())
 }
