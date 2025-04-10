@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 from audio_processor import PyAudioProcessor
+import tkinter as tk
+from tkinter import filedialog
 
 class AudioVisualizer:
     def __init__(self, audio_file, num_bars=20):
@@ -43,9 +45,24 @@ class AudioVisualizer:
         )
         plt.show()
 
+def select_audio_file():
+    """Open a file dialog to select an audio file."""
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    file_path = filedialog.askopenfilename(
+        title="Select an Audio File",
+        filetypes=[("Audio Files", "*.wav *.mp3 *.flac *.aac *.ogg")]
+    )
+    return file_path
+
 def main():
-    # Example usage
-    visualizer = AudioVisualizer(r"Zeit.wav")
+    # Allow the user to select an audio file via drag-and-drop or file dialog
+    audio_file = select_audio_file()
+    if not audio_file:
+        print("No file selected. Exiting...")
+        return
+
+    visualizer = AudioVisualizer(audio_file)
     visualizer.start()
 
 if __name__ == "__main__":
