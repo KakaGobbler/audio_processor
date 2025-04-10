@@ -2,7 +2,6 @@
 use std::fs::File;
 use std::io::BufReader;
 use hound;
-use pyo3::prelude::*;
 
 pub struct AudioProcessor {
     samples: Vec<f32>,
